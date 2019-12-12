@@ -1,0 +1,9 @@
+diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+index 2854cad..bb919dd 100644
+--- a/drivers/misc/Makefile
++++ b/drivers/misc/Makefile
+@@ -77,3 +77,4 @@ obj-$(CONFIG_SPRD_TMC)		+= sprd_tmc.o
+ obj-$(CONFIG_QOS_SECURE_SETTING)        += secure_qos_setting.o
+ obj-y  += sprd_map/
+ obj-y  += dev_features/
++obj-y  += simple_cdev/
