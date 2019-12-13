@@ -1,0 +1,16 @@
+type hal_naruto_default, domain;
+type hal_naruto_default_exec, exec_type, vendor_file_type, file_type;
+
+allow hal_naruto_default sysfs:file rw_file_perms;
+allow hal_naruto_default hwservicemanager_prop:file r_file_perms;
+allow hal_naruto_default hwservicemanager:binder { transfer call };
+
+allow hal_naruto_default hal_naruto_hwservice:binder call;
+allow hal_naruto_default hal_naruto_hwservice:hwservice_manager { add find };
+
+allow hal_naruto_default hidl_base_hwservice:hwservice_manager add;
+
+allow hal_naruto_default system_file:dir {read open};
+allow hal_naruto_default naruto_device:chr_file {open read write};
+
+init_daemon_domain(hal_naruto_default)

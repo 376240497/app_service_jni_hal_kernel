@@ -1,0 +1,7 @@
+package android.hardware.naruto@1.0;
+
+interface INaruto {
+	get() generates (string result);
+
+	set(string buf);
+};

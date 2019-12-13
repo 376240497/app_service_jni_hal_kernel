@@ -1,0 +1,115 @@
+diff --git a/sprd/pike2/common/manifest_main.xml b/sprd/pike2/common/manifest_main.xml
+index 269f6bd..c3c1720 100644
+--- a/sprd/pike2/common/manifest_main.xml
++++ b/sprd/pike2/common/manifest_main.xml
+@@ -1,4 +1,17 @@
+ <manifest version="1.0" type="device" target-level="3">
++
++    <hal format="hidl">
++        <name>android.hardware.naruto</name>
++        <transport>hwbinder</transport>
++        <impl level="generic"></impl>
++        <version>1.0</version>
++        <interface>
++            <name>INaruto</name>
++            <instance>default</instance>
++        </interface>
++    </hal>
++
++
+     <hal format="hidl">
+         <name>android.hardware.graphics.allocator</name>
+         <transport>hwbinder</transport>
+diff --git a/sprd/pike2/common/rootdir/root/ueventd.common.rc b/sprd/pike2/common/rootdir/root/ueventd.common.rc
+index b0cc974..1c9b0d8 100644
+--- a/sprd/pike2/common/rootdir/root/ueventd.common.rc
++++ b/sprd/pike2/common/rootdir/root/ueventd.common.rc
+@@ -55,6 +55,8 @@
+ /dev/map_user           0660     system      system
+ /dev/power_ctl	    0660     system      system
+ 
++/dev/simple_chrdev  0660     system      system
++
+ /sys/devices/system/cpu/cpu* /cpufreq/interactive/boost 0660 media system
+ /sys/devices/system/cpu/cpu* /cpufreq/interactive/boostpulse 0660 system system
+ /sys/devices/system/cpu/cpu* /cpufreq/interactive/boostpulse_duration 0660 system system
+diff --git a/sprd/pike2/common/sepolicy/device.te b/sprd/pike2/common/sepolicy/device.te
+index ffd55e3..9f0045a 100644
+--- a/sprd/pike2/common/sepolicy/device.te
++++ b/sprd/pike2/common/sepolicy/device.te
+@@ -21,3 +21,5 @@ type log_device, dev_type, mlstrustedobject;
+ type map_device, dev_type;
+ #sdcard device
+ type sdcard_device, dev_type;
++
++type naruto_device, dev_type;
+diff --git a/sprd/pike2/common/sepolicy/file_contexts b/sprd/pike2/common/sepolicy/file_contexts
+index d82981d..fbfe332 100644
+--- a/sprd/pike2/common/sepolicy/file_contexts
++++ b/sprd/pike2/common/sepolicy/file_contexts
+@@ -137,6 +137,11 @@
+ /dev/sprd_image               u:object_r:camera_device:s0
+ /dev/sprd_cpp                 u:object_r:camera_device:s0
+ 
++
++/(vendor|system/vendor)/bin/hw/android\.hardware\.naruto@1\.0-service    u:object_r:hal_naruto_default_exec:s0
++
++
++
+ # face hidl service
+ /vendor/bin/hw/vendor\.sprd\.hardware\.face@1\.0-service u:object_r:hal_face_default_exec:s0
+ 
+@@ -317,4 +322,6 @@
+ #for charge
+ /mnt/vendor/battery(/.*)?      u:object_r:battery_file:s0
+ 
++/dev/simple_chrdev		u:object_r:naruto_device:s0
++
+ /elable(/.*)?      u:object_r:system_file:s0
+diff --git a/sprd/pike2/common/sepolicy/hwservice.te b/sprd/pike2/common/sepolicy/hwservice.te
+index f188b63..339a838 100755
+--- a/sprd/pike2/common/sepolicy/hwservice.te
++++ b/sprd/pike2/common/sepolicy/hwservice.te
+@@ -4,8 +4,11 @@ type hal_extthermal_hwservice, hwservice_manager_type;
+ type hal_connmgr_hwservice, hwservice_manager_type;
+ type hal_extGnss_hwservice, hwservice_manager_type;
+ 
++
++type hal_naruto_hwservice, hwservice_manager_type;
++
+ # face hidl service
+ type hal_face_hwservice, hwservice_manager_type;
+ #log
+ type hal_log_hwservice, hwservice_manager_type;
+-type hal_aprd_hwservice, hwservice_manager_type;
+\ No newline at end of file
++type hal_aprd_hwservice, hwservice_manager_type;
+diff --git a/sprd/pike2/common/sepolicy/hwservice_contexts b/sprd/pike2/common/sepolicy/hwservice_contexts
+index e7ce107..de2ac97 100644
+--- a/sprd/pike2/common/sepolicy/hwservice_contexts
++++ b/sprd/pike2/common/sepolicy/hwservice_contexts
+@@ -7,5 +7,8 @@ vendor.sprd.hardware.power::IPower        u:object_r:hal_power_hwservice:s0
+ vendor.sprd.hardware.gnss::IGnssExt     u:object_r:hal_extGnss_hwservice:s0
+ vendor.sprd.hardware.aprd::IAprdInfoSync     u:object_r:hal_aprd_hwservice:s0
+ 
++#naruto hidl service. test 
++android.hardware.naruto::INaruto	u:object_r:hal_naruto_hwservice:s0
++
+ # face hidl service
+ vendor.sprd.hardware.face::IFace u:object_r:hal_face_hwservice:s0
+diff --git a/sprd/pike2/common/sepolicy/hwservicemanager.te b/sprd/pike2/common/sepolicy/hwservicemanager.te
+index d880a31..f7068c2 100644
+--- a/sprd/pike2/common/sepolicy/hwservicemanager.te
++++ b/sprd/pike2/common/sepolicy/hwservicemanager.te
+@@ -45,3 +45,11 @@ allow hwservicemanager hal_aprd_default:binder { transfer call };
+ allow hwservicemanager hal_aprd_default:dir {  search };
+ allow hwservicemanager hal_aprd_default:file {  read open };
+ allow hwservicemanager hal_aprd_default:process {  getattr };
++
++allow hwservicemanager hal_naruto_default:process getattr;
++allow hwservicemanager hal_naruto_default:binder { transfer call };
++allow hwservicemanager hal_naruto_default:file r_file_perms;
++allow hwservicemanager hal_naruto_default:file {  read open };
++allow hwservicemanager hal_naruto_default:dir search;
++
++

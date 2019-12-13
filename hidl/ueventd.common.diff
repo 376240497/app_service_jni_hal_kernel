@@ -1,0 +1,13 @@
+diff --git a/sprd/pike2/common/rootdir/root/ueventd.common.rc b/sprd/pike2/common/rootdir/root/ueventd.common.rc
+index b0cc974..1c9b0d8 100644
+--- a/sprd/pike2/common/rootdir/root/ueventd.common.rc
++++ b/sprd/pike2/common/rootdir/root/ueventd.common.rc
+@@ -55,6 +55,8 @@
+ /dev/map_user           0660     system      system
+ /dev/power_ctl	    0660     system      system
+ 
++/dev/simple_chrdev  0660     system      system
++
+ /sys/devices/system/cpu/cpu* /cpufreq/interactive/boost 0660 media system
+ /sys/devices/system/cpu/cpu* /cpufreq/interactive/boostpulse 0660 system system
+ /sys/devices/system/cpu/cpu* /cpufreq/interactive/boostpulse_duration 0660 system system
