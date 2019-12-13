@@ -1,0 +1,9 @@
+
+1、在kernel4.4/drivers/misc目录下新建simple_cdev
+   驱动代码在kernel目录
+
+2、在kernel4.4/drivers/misc/Makefile中加入：
++obj-y  += simple_cdev/
+
+
+simple_cdev是一个简单的读写字符设备，以ko的方式编译。

@@ -9,11 +9,39 @@
 
 #define PATH	"/dev/simple_chrdev"
 
+
+static int set(int fd, const char * str) 
+{
+	int ret;
+
+	ret = write(fd, str, strlen(str));
+	if(ret <= 0) {
+		printf("write error\n");
+		return -1;
+	}
+
+	return ret;
+}
+
+
+static int get(int fd, char * str, int size)
+{
+	int ret;
+	
+	ret = read(fd, str, size);
+	if(ret <= 0) {
+		printf("read error\n");
+		return -1;
+	}
+
+	return ret;
+}
+
 int main(void)
 {
 	int fd;
 	char buff[20] = {0};
-	char str[20] = "I am from kernel";
+	char aaa[] = "naruto from kernel";
 
 	fd = open(PATH, O_RDWR);
 	if (fd == -1) {
@@ -21,9 +49,8 @@ int main(void)
 		return -1;
 	}
 
-	write(fd, str, strlen(str));
-	
-	read(fd, buff, 20);
+	set(fd, aaa);
+	get(fd, buff, sizeof(buff));
 
 	printf("%s\n", buff);
 
@@ -31,3 +58,4 @@ int main(void)
 
 	return 0;
 }
+
