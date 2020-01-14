@@ -1,0 +1,46 @@
+diff --git a/base/services/core/jni/Android.bp b/base/services/core/jni/Android.bp
+index 6218498..945acd9 100644
+--- a/base/services/core/jni/Android.bp
++++ b/base/services/core/jni/Android.bp
+@@ -21,6 +21,7 @@ cc_library_static {
+         "BroadcastRadio/convert.cpp",
+         "BroadcastRadio/regions.cpp",
+         "com_android_server_AlarmManagerService.cpp",
++		"com_android_server_NarutoService.cpp",
+         "com_android_server_am_BatteryStatsService.cpp",
+         "com_android_server_connectivity_Vpn.cpp",
+         "com_android_server_connectivity_tethering_OffloadHardwareInterface.cpp",
+@@ -117,6 +118,7 @@ cc_defaults {
+         "android.hardware.gnss.visibility_control@1.0",
+         "android.hardware.input.classifier@1.0",
+         "android.hardware.ir@1.0",
++		"android.hardware.naruto@1.0",
+         "android.hardware.light@2.0",
+         "android.hardware.power@1.0",
+         "android.hardware.power@1.1",
+diff --git a/base/services/core/jni/onload.cpp b/base/services/core/jni/onload.cpp
+index efffa6c..538d554 100644
+--- a/base/services/core/jni/onload.cpp
++++ b/base/services/core/jni/onload.cpp
+@@ -24,6 +24,10 @@
+ 
+ namespace android {
+ int register_android_server_AlarmManagerService(JNIEnv* env);
++
++//liaoye
++int register_android_server_NarutoService(JNIEnv *env);
++
+ int register_android_server_BatteryStatsService(JNIEnv* env);
+ int register_android_server_ConsumerIrService(JNIEnv *env);
+ int register_android_server_InputManager(JNIEnv* env);
+@@ -79,6 +83,10 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* /* reserved */)
+     register_android_server_InputManager(env);
+     register_android_server_LightsService(env);
+     register_android_server_AlarmManagerService(env);
++
++	//liaoye
++	register_android_server_NarutoService(env);
++
+     register_android_server_UsbDeviceManager(env);
+     register_android_server_UsbMidiDevice(env);
+     register_android_server_UsbAlsaJackDetector(env);

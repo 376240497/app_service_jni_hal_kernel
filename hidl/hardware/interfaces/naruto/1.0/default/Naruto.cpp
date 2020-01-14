@@ -42,7 +42,6 @@ Return<void> Naruto::set(const hidl_string& buf) {
 	int ret;
 	char str[128];
 	::memset(str, 0, 128);
-//	::snprintf(buf, 128, "helloworld, %s", name.c_str());
 	::snprintf(str, 128, "%s", buf.c_str());
 
 	ret = mDevice->set(mDevice, str);
@@ -55,8 +54,6 @@ Return<void> Naruto::set(const hidl_string& buf) {
 }
 
 
-// Methods from ::android::hidl::base::V1_0::IBase follow.
-
 INaruto* HIDL_FETCH_INaruto(const char* /* name */) {
 	struct naruto_device_t * device = nullptr;
 	const struct hw_module_t *module = nullptr;
@@ -64,7 +61,6 @@ INaruto* HIDL_FETCH_INaruto(const char* /* name */) {
 	int ret = hw_get_module(NARUTO_HARDWARE_MODULE_ID, &module);
 
 	if (ret == 0) {
-	//	ret = module->methods->open(module, NARUTO_HARDWARE_DEVICE_ID, TO_HW_DEVICE_T_OPEN(device));
 
 		ret = naruto_open(module, &device);
 

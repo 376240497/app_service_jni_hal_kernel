@@ -1,0 +1,24 @@
+diff --git a/base/services/java/com/android/server/SystemServer.java b/base/services/java/com/android/server/SystemServer.java
+index f7694f7..7d4f85c 100644
+--- a/base/services/java/com/android/server/SystemServer.java
++++ b/base/services/java/com/android/server/SystemServer.java
+@@ -116,6 +116,7 @@ import com.android.server.om.OverlayManagerService;
+ import com.android.server.os.BugreportManagerService;
+ import com.android.server.os.DeviceIdentifiersPolicyService;
+ import com.android.server.os.SchedulingPolicyService;
++import com.android.server.NarutoService;
+ import com.android.server.pm.BackgroundDexOptService;
+ import com.android.server.pm.CrossProfileAppsService;
+ import com.android.server.pm.DynamicCodeLoggingService;
+@@ -994,6 +995,11 @@ public final class SystemServer {
+             ServiceManager.addService("scheduling_policy", new SchedulingPolicyService());
+             traceEnd();
+ 
++			//liaoye
++            traceBeginAndSlog("NarutoService");
++            ServiceManager.addService("naruto_service", new NarutoService());
++            traceEnd();
++
+             traceBeginAndSlog("StartTelecomLoaderService");
+             mSystemServiceManager.startService(TelecomLoaderService.class);
+             traceEnd();

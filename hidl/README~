@@ -98,11 +98,3 @@ vendor/lib/android.hardware.naruto@1.0-adapter-helper.so
 然后删除掉out/target/product/k150/obj/PACKAGING/vndk_intermediates/libs.txt。
 
 2、通过手动执行vendor/bin/hw/android.hardware.naruto@1.0-service看是否能正常启动service
-
-
-3、如下报错是vendor/bin/hw/android.hardware.naruto@1.0-service没有正常启动
-01-01 08:01:12.050  1021  1021 W ServiceManagement: Waited one second for android.hardware.naruto@1.0::INaruto/default
-01-01 08:01:12.051  1021  1021 I ServiceManagement: getService: Trying again for android.hardware.naruto@1.0::INaruto/default...
-
-
-

@@ -1,0 +1,18 @@
+diff --git a/mediatek/mt6761/device.mk b/mediatek/mt6761/device.mk
+index b213b1e..d1d2f6c 100644
+--- a/mediatek/mt6761/device.mk
++++ b/mediatek/mt6761/device.mk
+@@ -1270,6 +1270,13 @@ PRODUCT_PACKAGES += \
+         android.hardware.oemlock@1.0-service \
+         android.hardware.oemlock@1.0-impl
+ 
++PRODUCT_PACKAGES += \
++		android.hardware.naruto@1.0-impl\
++		android.hardware.naruto@1.0-service\
++		narutotest\
++		naruto.default\
++		simplecdevtest
++
+ # mtk av enhance
+ #PRODUCT_PACKAGES += libmtkavenhancements
+ 

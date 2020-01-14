@@ -1,0 +1,20 @@
+1、aidl生成文件java目录：
+out/soong/.intermediates/frameworks/base/framework/android_common/gen/aidl/frameworks/base/core/java/android/app/INarutoManager.java
+
+2、com/android/server/NarutoService  需要与frameworks/base/services/core/java/com/android/server/NarutoService.java
+一致，否则无法正确的调用到。
+
+ 96     return jniRegisterNativeMethods(env, "com/android/server/NarutoService",
+ 97             method_table, NELEM(method_table));
+
+3、在添加完service manager aidl后需要
+make update-api
+否则编译报错
+
+4、开机启动，查看service是否已经正常启动
+k560AN:/ # service list | grep -inr naruto
+(standard input):23:21	naruto_service: [android.app.INarutoManager]
+
+
+
+

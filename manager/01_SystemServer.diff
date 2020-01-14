@@ -1,0 +1,53 @@
+diff --git a/base/Android.bp b/base/Android.bp
+index bb8fe4a..3199b0a 100644
+--- a/base/Android.bp
++++ b/base/Android.bp
+@@ -63,6 +63,7 @@ java_defaults {
+         "core/java/android/app/IAlarmCompleteListener.aidl",
+         "core/java/android/app/IAlarmListener.aidl",
+         "core/java/android/app/IAlarmManager.aidl",
++        "core/java/android/app/INarutoManager.aidl",
+         "core/java/android/app/IAppTask.aidl",
+         "core/java/android/app/IApplicationThread.aidl",
+         "core/java/android/app/IAssistDataReceiver.aidl",
+diff --git a/base/api/current.txt b/base/api/current.txt
+index f654295..cf0b50a 100644
+--- a/base/api/current.txt
++++ b/base/api/current.txt
+@@ -5256,6 +5256,12 @@ package android.app {
+     method public void showDialog();
+   }
+ 
++  public class NarutoManager {
++    ctor public NarutoManager();
++    method public String get();
++    method public void set(String);
++  }
++
+   public class NativeActivity extends android.app.Activity implements android.view.InputQueue.Callback android.view.SurfaceHolder.Callback2 android.view.ViewTreeObserver.OnGlobalLayoutListener {
+     ctor public NativeActivity();
+     method public void onGlobalLayout();
+diff --git a/base/services/java/com/android/server/SystemServer.java b/base/services/java/com/android/server/SystemServer.java
+index f7694f7..7d4f85c 100644
+--- a/base/services/java/com/android/server/SystemServer.java
++++ b/base/services/java/com/android/server/SystemServer.java
+@@ -116,6 +116,7 @@ import com.android.server.om.OverlayManagerService;
+ import com.android.server.os.BugreportManagerService;
+ import com.android.server.os.DeviceIdentifiersPolicyService;
+ import com.android.server.os.SchedulingPolicyService;
++import com.android.server.NarutoService;
+ import com.android.server.pm.BackgroundDexOptService;
+ import com.android.server.pm.CrossProfileAppsService;
+ import com.android.server.pm.DynamicCodeLoggingService;
+@@ -994,6 +995,11 @@ public final class SystemServer {
+             ServiceManager.addService("scheduling_policy", new SchedulingPolicyService());
+             traceEnd();
+ 
++			//liaoye
++            traceBeginAndSlog("NarutoService");
++            ServiceManager.addService("naruto_service", new NarutoService());
++            traceEnd();
++
+             traceBeginAndSlog("StartTelecomLoaderService");
+             mSystemServiceManager.startService(TelecomLoaderService.class);
+             traceEnd();
