@@ -54,14 +54,17 @@ Return<void> Naruto::set(const hidl_string& buf) {
 }
 
 
+//JNI层通过INaruto::getService() --> 最终调用到HIDL_FETCH_INaruto
 INaruto* HIDL_FETCH_INaruto(const char* /* name */) {
 	struct naruto_device_t * device = nullptr;
 	const struct hw_module_t *module = nullptr;
 
+	//通过ID查找到对应的HAL lib模块
 	int ret = hw_get_module(NARUTO_HARDWARE_MODULE_ID, &module);
 
 	if (ret == 0) {
 
+		//在通过module获取到HAL device, 通过device可以调用HAL中的方法
 		ret = naruto_open(module, &device);
 
 		if (ret != 0) {
@@ -72,6 +75,7 @@ INaruto* HIDL_FETCH_INaruto(const char* /* name */) {
 	}
 
 	if (ret == 0) {
+		//返回一个INaruto对象，JNI就可以通过INaruto对象调用到HIDL中实现的方法
     	return new Naruto(device);
 	} else {
 		ALOGE("failed to open naruto hal\n");

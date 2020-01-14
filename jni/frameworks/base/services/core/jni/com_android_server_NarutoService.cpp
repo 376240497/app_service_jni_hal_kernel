@@ -37,6 +37,8 @@ static void init_native(JNIEnv* /* env */, jclass /* clazz */) {
         return;
     }
 
+	//JNI层通过INaruto::getService() --> 最终调用到HIDL_FETCH_INaruto
+	//并返回一个INaruto的对象
     mNaruto = INaruto::getService();
     if (mNaruto == nullptr) {
         ALOGW("%s: Could not open INaruto interface", __FUNCTION__);
@@ -46,6 +48,7 @@ static void init_native(JNIEnv* /* env */, jclass /* clazz */) {
 
 static void set_native(JNIEnv * env, jclass clazz, jstring str)
 {
+	//将java string 类型转换为char数组
 	const char *buf = env->GetStringUTFChars(str, NULL);
 
 	ALOGE("%s, naruto: %s", __FUNCTION__, buf);
@@ -74,6 +77,7 @@ static jstring get_native(JNIEnv * env, jclass clazz)
 
 	mNaruto->get([&](hidl_string result){
 		ALOGW("naruto@%s: %s\n", __FUNCTION__, result.c_str());
+		//把char数组转换为java string
 		str = env->NewStringUTF(result.c_str());
 	});
 
@@ -88,6 +92,8 @@ static const JNINativeMethod method_table[] = {
 
 int register_android_server_NarutoService(JNIEnv *env)
 {
+	//com/android/server/NarutoService  需要与frameworks/base/services/
+	//core/java/com/android/server/NarutoService.java	一致，否则无法正确的调用到。
     return jniRegisterNativeMethods(env, "com/android/server/NarutoService",
             method_table, NELEM(method_table));
 }

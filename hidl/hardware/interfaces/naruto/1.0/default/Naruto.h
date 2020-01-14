@@ -32,6 +32,7 @@ struct Naruto : public INaruto {
 
 
 private:
+	//指针指向HAL中实现的device
   struct naruto_device_t *mDevice;
 };
 
